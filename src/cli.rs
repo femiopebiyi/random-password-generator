@@ -1,5 +1,7 @@
 use clap::Parser;
 
+use crate::generator::PasswordType;
+
 /// A secure password generator
 #[derive(Parser, Debug)]
 #[command(name = "passgen")]
@@ -37,4 +39,8 @@ pub struct Cli {
     /// Exclude ambiguous characters (0, O, l, 1, I)
     #[arg(long, default_value_t = false)]
     pub exclude_ambiguous: bool,
+
+    /// Type of password to generate
+    #[arg(short = 't', long, default_value_t = PasswordType::PassWord, value_enum)]
+    pub password_type: PasswordType,
 }

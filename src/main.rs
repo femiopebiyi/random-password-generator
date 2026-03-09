@@ -6,6 +6,7 @@ use strength::PasswordStrength;
 mod cli;
 mod generator;
 mod strength;
+mod words;
 
 fn main() {
     let args = Cli::parse();
@@ -17,6 +18,7 @@ fn main() {
         args.include_numbers,
         args.include_special,
         args.exclude_ambiguous,
+        args.password_type,
     );
 
     for i in 0..args.count {
@@ -28,8 +30,10 @@ fn main() {
                     println!("🔐 Generated Password: {}", password.bright_green().bold());
                 }
 
-                if args.show_strength {
+                if args.show_strength && generator.kind == generator::PasswordType::PassWord {
                     PasswordStrength::display_analysis(&password);
+                } else {
+                    PasswordStrength::display_analysis_for_passphrase(&password);
                 }
             }
             Err(e) => {

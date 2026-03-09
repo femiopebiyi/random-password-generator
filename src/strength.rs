@@ -114,4 +114,34 @@ impl PasswordStrength {
             );
         }
     }
+
+    pub fn display_analysis_for_passphrase(phrase: &str) {
+        let word_count = phrase.split('-').count();
+        let strength = if word_count < 3 {
+            Self::Weak
+        } else if word_count < 5 {
+            Self::Medium
+        } else if word_count < 7 {
+            Self::Strong
+        } else {
+            Self::VeryStrong
+        };
+
+        println!("\n{}", "📊 Passphrase Analysis".bright_cyan().bold());
+        println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        println!("Words: {}", word_count);
+        println!(
+            "\n{}: {} ({}%)\n\n",
+            "Strength".bold(),
+            strength.to_colored_string(),
+            strength.score()
+        );
+
+        if strength == Self::Weak || strength == Self::VeryWeak {
+            println!(
+                "\n{}: Consider using more words in your passphrase for better security.\n",
+                "Tip".yellow().bold()
+            );
+        }
+    }
 }
